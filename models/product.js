@@ -23,6 +23,7 @@ productSchema= new mongoose.Schema({
     },
     category:{
         type: String,
+        required: [true, 'Your product must have a category']
     },
     dateAdded:{
         type: Date,
@@ -30,10 +31,11 @@ productSchema= new mongoose.Schema({
     },
     brand:{
         type: String,
+        required: [true, 'Your product must have a brand']
     },
     image:{
         type: String,
-       
+        required: [true, 'Your product must have an image']
     }
 })
 

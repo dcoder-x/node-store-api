@@ -1,4 +1,8 @@
-const { query } = require('express')
+const fs = require('fs');
+const path = require('path');
+const multer = require('multer');
+
+
 const Product = require('../models/product')
 
 const getAllproducts = async (req,res)=>{
@@ -80,15 +84,40 @@ const getProduct = async (req,res)=>{
     }
 },
 addProduct=async (req,res)=>{
-    try {
-        const product =req.body
-        console.log(product)
-        await  Product.create(product)
-       
-        res.status(200).json({msg:'product added sucessfully'})
-    } catch (error) {
-        res.send(error)
-    }
+    const storage = multer.diskStorage({
+        destination: 'controllers/uploads',
+        filename: (req, file, cb) => {
+            cb(null, file.fieldname +Date.now()+'.jpg')
+        },
+        
+    });
+    
+    const upload = multer({ storage: storage,  limits: {
+        fieldNameSize: 300,
+        fileSize: 5048579, // 5Mb
+      }}).single('image');
+
+
+      upload( req,res,async (err)=>{
+        console.log(req.file)
+        if (err) {
+            res.status(401).send(err)
+        }
+        else{
+            const product =req.body
+            try {
+                
+                product.image= path.join(__dirname + '/uploads/' + req.file.filename)
+                console.log(product)
+               const newproduct =  await  Product.create(product)
+               
+                res.status(200).json({msg:'product added sucessfully',data:newproduct})
+            } catch (error) {
+                res.send(error)
+            }
+        }
+    })
+
     
 },
 
