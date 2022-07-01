@@ -20,7 +20,7 @@ const start = async ()=>{
 const express = require('express')
 const app = express()
 //middleware
-
+app.use(express.urlencoded({extended:false}))
 const notFoundMiddleWare = require('./middleware/not-found')
 const errorMiddleWare = require('./middleware/error-handler')
 app.use(express.json())
