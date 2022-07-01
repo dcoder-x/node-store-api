@@ -13,39 +13,39 @@ const getAllproducts = async (req,res)=>{
 }
 const getProduct = async (req,res)=>{
     try {
-        const { name,field,sort,minPrice,minRating,maxPrice,numericFilters} = req.query;
+        const { name,field,brand,category,sort,minPrice,minRating,maxPrice,numericFilters} = req.query;
         //queryObjects
         const queryObjects={};
         if(name){
             queryObjects.name={$regex:name,$options:'i'}
         }
-        // if(numericFilters){
-        //     const operatorMap={
-        //         '>':'$gt',
-        //         '>=':'$gte',
-        //         '=':'$eq',
-        //         '<=':'$lte',
-        //         '<':'$lt',
-        //     }
-        //     const regEx= /\b(<|>|>=|=|<=)\b/g
-        //     let filters = numericFilters.replace(
-        //         regEx,
-        //         (match)=> `-${operatorMap[match]}-`
-        //     );
-        //     const options= ['price','rating'];
-        //     filters = filters.split(',').forEach(item => {
-        //         const [field,operator,value] = item.split('-')
-        //         if(options.includes(field)){
-        //             queryObjects[field] = {[operator]:Number(value)}
-        //         }
-        //     });
-        // }
-        // if(category){
-        //     queryObjects.category={$regex:category,$options:'i'}
-        // }
-        // if(brand){
-        //     queryObjects.brand={$regex:brand,$options:'i'}
-        // }
+        if(numericFilters){
+            const operatorMap={
+                '>':'$gt',
+                '>=':'$gte',
+                '=':'$eq',
+                '<=':'$lte',
+                '<':'$lt',
+            }
+            const regEx= /\b(<|>|>=|=|<=)\b/g
+            let filters = numericFilters.replace(
+                regEx,
+                (match)=> `-${operatorMap[match]}-`
+            );
+            const options= ['price','rating'];
+            filters = filters.split(',').forEach(item => {
+                const [field,operator,value] = item.split('-')
+                if(options.includes(field)){
+                    queryObjects[field] = {[operator]:Number(value)}
+                }
+            });
+        }
+        if(category){
+            queryObjects.category={$regex:category,$options:'i'}
+        }
+        if(brand){
+            queryObjects.brand={$regex:brand,$options:'i'}
+        }
         if (minPrice||maxPrice) {
             queryObjects.price={$gte:Number(minPrice)||0,$lte:Number(maxPrice)||99999999999}
         }
