@@ -1,8 +1,7 @@
 require('dotenv').config()
 const ConnectDB = require('./db/connect')
 const routes = require('./routes/products')
-const cors = require('cors');
-app.use(cors())
+
 //port
 
 
@@ -21,6 +20,8 @@ const start = async ()=>{
 
 const express = require('express')
 const app = express()
+const cors = require('cors');
+app.use(cors())
 //middleware
 app.use(express.urlencoded({extended:false}))
 const notFoundMiddleWare = require('./middleware/not-found')
