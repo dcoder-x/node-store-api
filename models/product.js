@@ -29,6 +29,9 @@ productSchema= new mongoose.Schema({
         type: Date,
         default: Date.now()
     },
+    sellerId:{
+        type:String,
+    },
     brand:{
         type: String,
         required: [true, 'Your product must have a brand']

@@ -122,10 +122,13 @@ addProduct=async (req,res)=>{
 },
 
 deleteProduct=async (req,res)=>{
+    const {id}= req.params
+    Product.deleteOne(id)
     
 },
 updateProduct=async (req,res)=>{
-    console.log('update')
+    const {id}= req.params
+    Product.findByIdAndUpdate(id)
 
 }
 

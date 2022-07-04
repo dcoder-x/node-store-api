@@ -35,3 +35,6 @@ app.use(notFoundMiddleWare)
 app.use(errorMiddleWare)
 
 start()
+
+
+module.exports = app
