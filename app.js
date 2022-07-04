@@ -7,14 +7,14 @@ const routes = require('./routes/products')
 
 const start = async ()=>{
     try {
-        await ConnectDB(process.env.MONGO_URI)
+        await ConnectDB('mongodb+srv://Ayomikun:response@cluster0.bfkxf.mongodb.net/store-api?retryWrites=true&w=majority')
 
         console.log(`sucess db is connected`)
         app.listen(process.env.PORT,()=>{
             console.log(`server is listening on port ${process.env.PORT}`) 
         })
     } catch (error) {
-        console.log(error)
+        res.send(error)
     }
 }
 
@@ -31,7 +31,7 @@ app.use('/api/v1/store',routes)
 
 
 app.get('/',(req,res)=>{
-    res.send('<h1>Hello Store</h1>')
+    res.json({msg:'you are in'})
 })
 
 app.use(notFoundMiddleWare)
