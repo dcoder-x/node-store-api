@@ -7,7 +7,7 @@ const routes = require('./routes/products')
 
 const start = async ()=>{
     try {
-        await ConnectDB('mongodb+srv://Ayomikun:response@cluster0.bfkxf.mongodb.net/store-api?retryWrites=true&w=majority')
+        await ConnectDB(process.env.MONGO_URI)
 
         console.log(`sucess db is connected`)
         app.listen(process.env.PORT,()=>{
