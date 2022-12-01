@@ -29,12 +29,16 @@ productSchema= new mongoose.Schema({
         type: Date,
         default: Date.now()
     },
+    seller:{
+        type: String,
+        required: [true, 'sellerName must be provided']
+    },
     sellerId:{
         type:String,
+        required: [true, 'sellerId must be provided']
     },
     brand:{
         type: String,
-        required: [true, 'Your product must have a brand']
     },
     image:{
         type: String,

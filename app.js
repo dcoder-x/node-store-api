@@ -2,6 +2,8 @@ require('dotenv').config()
 const ConnectDB = require('./db/connect')
 const routes = require('./routes/products')
 
+const auth =require('./routes/auth')
+
 //port
 
 
@@ -14,7 +16,7 @@ const start = async ()=>{
             console.log(`server is listening on port ${process.env.PORT}`) 
         })
     } catch (error) {
-        res.send(error)
+        console.log(error)
     }
 }
 
@@ -28,6 +30,7 @@ const notFoundMiddleWare = require('./middleware/not-found')
 const errorMiddleWare = require('./middleware/error-handler')
 app.use(express.json())
 app.use('/api/v1/store',routes)
+app.use('/auth', auth)
 
 
 app.get('/',(req,res)=>{

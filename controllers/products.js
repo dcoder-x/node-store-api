@@ -3,12 +3,12 @@ const path = require('path');
 const multer = require('multer');
 
 
-const Product = require('../models/product')
+const Product = require('../models/product');
+const Seller = require('../models/seller');
 
 const getAllproducts = async (req,res)=>{
     try {
         const products = await Product.find({}).sort({ratings:-1})
-        console.log(products)
         res.send(products)
     } catch (error) {
         res.json(error)
@@ -107,11 +107,26 @@ addProduct=async (req,res)=>{
             const product =req.body
             try {
                 
-                product.image= path.join(__dirname + '/uploads/' + req.file.filename)
-                console.log(product)
-               const newproduct =  await  Product.create(product)
+                const {sellerId} = product
+                const sellerValid = Seller.find({sellerId:sellerId})
+
+                if (sellerValid.length>0) {
+                    product.image= path.join(__dirname + '/uploads/' + req.file.filename)
+                    console.log(product)
+                    try {
+                        const newproduct =  await  Product.create(product)
+                        res.status(200).json({msg:'product added sucessfully',data:newproduct})
+                    } catch (error) {
+                        res.status(401).json(error)
+                    }
+                } else {
+                    res.status(401).send('invalid seller ID provided')
+                }
+                
+
                
-                res.status(200).json({msg:'product added sucessfully',data:newproduct})
+               
+               
             } catch (error) {
                 res.send(error)
             }
@@ -123,12 +138,12 @@ addProduct=async (req,res)=>{
 
 deleteProduct=async (req,res)=>{
     const {id}= req.params
-    Product.deleteOne(id)
+    Product.deleteOne({_id:id})
     
 },
 updateProduct=async (req,res)=>{
     const {id}= req.params
-    Product.findByIdAndUpdate(id)
+    Product.findByIdAndUpdate({_id:id})
 
 }
 
